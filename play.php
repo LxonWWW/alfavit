@@ -26,7 +26,7 @@ $characters_lc['​с'] = "ess";
 $characters_lc['​т'] = "te";
 $characters_lc['​у'] = "u";
 $characters_lc['ф'] = "ef";
-$characters_lc['​х'] = "cha";
+$characters_lc['​х'] = "kh";
 $characters_lc['​ц'] = "tse";
 $characters_lc['​ч'] = "tscha";
 $characters_lc['​ш'] = "scha";
@@ -61,7 +61,7 @@ $characters_uc['​С'] = 'ess';
 $characters_uc['Т'] = 'te';
 $characters_uc['​У'] = 'u';
 $characters_uc['Ф'] = 'ef';
-$characters_uc['​Х'] = 'cha';
+$characters_uc['​Х'] = 'kh';
 $characters_uc['​Ц'] = 'tse';
 $characters_uc['​Ч'] = 'tscha';
 $characters_uc['​Ш'] = 'scha';
@@ -73,11 +73,26 @@ $characters_uc['​Э'] = 'ae';
 $characters_uc['​Ю'] = 'ju';
 $characters_uc['Я'] = 'ja';
 
+$gif_stack = array();
+$gif_stack[] = "https://i.giphy.com/media/UxNCd08uBaFBC/giphy.webp";
+$gif_stack[] = "https://i.giphy.com/media/8qpvl5lcmht1S/giphy.webp";
+$gif_stack[] = "https://i.giphy.com/media/ewHXPjWTYkNngQ67Ia/giphy.webp";
+$gif_stack[] = "https://i.giphy.com/media/TIyJGNK325XGciFEnI/giphy.webp";
+$gif_stack[] = "https://i.giphy.com/media/S2CrRkUfDi7EQ/giphy.webp";
+$gif_stack[] = "https://i.giphy.com/media/F3kD16iiCU1Wg/giphy.webp";
+$gif_stack[] = "https://i.giphy.com/media/xFoV6W4tpQfqj9IV6E/giphy.webp";
+$gif_stack[] = "https://i.giphy.com/media/P0RWkdsRpK7ss/giphy.webp";
+$gif_stack[] = "https://i.giphy.com/media/qmdXBUg1qxbP2/giphy.webp";
+$gif_stack[] = "https://i.giphy.com/media/VZvYbdVZq5Lry/giphy.webp";
+$gif_stack[] = "https://media4.giphy.com/media/JwhwA8aWI64O4/giphy.gif";
+$gif_stack[] = "https://i.giphy.com/media/xiN0KVg1yJd8Ln1OO8/giphy.webp";
+
 $answers_color[0] = "white";
 $answers_color[1] = "white";
 $answers_color[2] = "white";
 
 $next_button = "";
+$putin_image = "";
 
 // Choose random character
 $char = null;
@@ -91,18 +106,19 @@ if(isset($_COOKIE['points']) == false) {
 	$points = base64_decode($_COOKIE['points']);
 	echo "Punkte: " . $points;
 }
+
 if(isset($_POST['answer']) == true && isset($_POST['question']) == true) {
 	$char = $_POST['question'];
 	$answers[0] = $_POST['answer_1'];
 	$answers[1] = $_POST['answer_2'];
 	$answers[2] = $_POST['answer_3'];
 	
-	$marker_color = "red";
+	$marker_color = "#fc7c7c";
 	
 	// color the right element depending on the answer
 	
 	if($characters_lc[$char] == $_POST['answer'] || $characters_uc[$char] == $_POST['answer']) {
-		$marker_color = "green";
+		$marker_color = "#93fc7c";
 	}
 	
 	foreach($answers as $key => $answer) {
@@ -111,8 +127,13 @@ if(isset($_POST['answer']) == true && isset($_POST['question']) == true) {
 		}
 	}
 	
-	if($marker_color == "green") {
+	if($marker_color == "#93fc7c") {
 		$points++;
+		
+		$putin_image = "
+		<br>
+		<br>
+		<img src='" . $gif_stack[array_rand($gif_stack, 1)] . "'></img>";
 	}else{
 		$points--;
 	}
@@ -131,7 +152,6 @@ if(isset($_POST['answer']) == true && isset($_POST['question']) == true) {
 	</script>
 	
 	<button id='next_button' onclick='next_question();'>Weiter</button>";
-	
 }else{
 	if(random_int(1, 2) == 1) {
 		$char = array_rand($characters_lc, 1);
@@ -154,7 +174,7 @@ if(isset($_POST['answer']) == true && isset($_POST['question']) == true) {
 echo "
 <style>
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100&display=swap');
+@import url('./media/fonts/roboto_mono.css');
 
 * {
     font-family: 'Roboto Mono', monospace;
@@ -190,6 +210,12 @@ echo "
 	padding-top 55%;
 }
 
+#author_info {
+	position: fixed;
+	bottom: 0.5%;
+	right: 0.5%;
+}
+
 </style>
 ";
 
@@ -220,7 +246,10 @@ echo "
 			<input type='hidden' name='answer_3' value='" . $answers[2] . "' />
 		</form>
 		
+		<text id='author_info'>Made with ❤ by LxonWWW</text>
+		
 		" . $next_button . "
+		" . $putin_image . "
 	</center>
 </body>";
 
